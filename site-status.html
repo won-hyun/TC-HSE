@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>안전관리 대시보드</title>
+<title>사업장 현황 | 안전환경팀</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -18,428 +18,142 @@
     --paper:#F4F7FA;
     --white:#FFFFFF;
     --amber:#E8A33D;
-    --amber-glow: rgba(232,163,61,0.55);
     --green:#2F8F5B;
     --line: rgba(15,31,48,0.12);
     --radius: 14px;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,.disp{
-    font-family:'Oswald',sans-serif;
-    letter-spacing:0.01em;
-    margin:0;
-  }
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.disp{font-family:'Oswald',sans-serif;letter-spacing:0.01em;margin:0;}
   .mono{font-family:'IBM Plex Mono',monospace;}
   a{color:inherit;text-decoration:none;}
 
   /* ---------- Header ---------- */
-  header{
-    background:var(--steel-900);
-    color:var(--white);
-    border-bottom:3px solid var(--amber);
-  }
-  .header-inner{
-    max-width:1180px;
-    margin:0 auto;
-    padding:18px 28px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:12px;
-  }
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
-  }
-  .brand-logo{
-    background:var(--white);
-    border-radius:6px;
-    padding:6px 12px;
-    display:flex;
-    align-items:center;
-    flex-shrink:0;
-  }
-  .brand-logo img{
-    height:26px;
-    display:block;
-  }
-  .brand-divider{
-    width:1px;
-    height:30px;
-    background:rgba(255,255,255,0.18);
-    flex-shrink:0;
-  }
-  .brand-text{
-    font-family:'Oswald',sans-serif;
-    font-size:19px;
-    font-weight:600;
-    letter-spacing:0.03em;
-  }
-  .brand-text span{
-    display:block;
-    font-family:'Inter',sans-serif;
-    font-size:11px;
-    font-weight:500;
-    color:var(--steel-300);
-    letter-spacing:0.08em;
-    margin-top:2px;
-  }
-  nav{
-    display:flex;
-    gap:4px;
-    flex-wrap:wrap;
-  }
-  nav a{
-    font-size:14px;
-    font-weight:500;
-    padding:9px 14px;
-    border-radius:8px;
-    color:var(--steel-100);
-    transition:background .15s ease;
-  }
-  nav a:hover, nav a:focus-visible{
-    background:rgba(255,255,255,0.1);
-    outline:none;
-  }
-  nav a.active{
-    background:var(--amber);
-    color:var(--steel-900);
-    font-weight:600;
-  }
-  nav a.todo{
-    background:#FDE047;
-    color:#7A5C00;
-    position:relative;
-  }
-  nav a.todo:hover, nav a.todo:focus-visible{
-    background:#FCD34D;
-  }
+  header{background:var(--steel-900);color:var(--white);border-bottom:3px solid var(--amber);}
+  .header-inner{max-width:1180px;margin:0 auto;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand-logo{background:var(--white);border-radius:6px;padding:6px 12px;display:flex;align-items:center;flex-shrink:0;}
+  .brand-logo img{height:26px;display:block;}
+  .brand-divider{width:1px;height:30px;background:rgba(255,255,255,0.18);flex-shrink:0;}
+  .brand-text{font-family:'Oswald',sans-serif;font-size:19px;font-weight:600;letter-spacing:0.03em;}
+  .brand-text span{display:block;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;color:var(--steel-300);letter-spacing:0.08em;margin-top:2px;}
+  nav{display:flex;gap:4px;flex-wrap:wrap;}
+  nav a{font-size:14px;font-weight:500;padding:9px 14px;border-radius:8px;color:var(--steel-100);transition:background .15s ease;}
+  nav a:hover, nav a:focus-visible{background:rgba(255,255,255,0.1);outline:none;}
+  nav a.active{background:var(--amber);color:var(--steel-900);font-weight:600;}
+  nav a.todo{background:#FDE047;color:#7A5C00;position:relative;}
+  nav a.todo:hover, nav a.todo:focus-visible{background:#FCD34D;}
 
+  /* ---------- Breadcrumb ---------- */
+  .crumb{max-width:1180px;margin:18px auto 0;padding:0 28px;font-size:13px;color:#5B6B7B;display:flex;align-items:center;gap:6px;}
+  .crumb a{color:var(--steel-500);font-weight:600;}
+  .crumb .sep{color:#B7C2CC;}
 
   main{max-width:1180px;margin:0 auto;padding:0 28px 80px;}
 
-  /* ---------- Hero: 무재해 전광판 ---------- */
-  .board-wrap{
-    margin-top:36px;
-    background:var(--steel-900);
-    border-radius:18px;
-    padding:34px 32px 30px;
-    position:relative;
-    overflow:hidden;
-    box-shadow:0 18px 40px rgba(15,42,68,0.28);
-  }
-  .board-wrap::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-      repeating-linear-gradient(115deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 26px);
-    pointer-events:none;
-  }
-  .bolt{
-    position:absolute;
-    width:9px;height:9px;
-    border-radius:50%;
-    background:radial-gradient(circle at 35% 30%, #6a83a0, #24405f 70%);
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3);
-  }
-  .bolt.tl{top:14px;left:14px;} .bolt.tr{top:14px;right:14px;}
-  .bolt.bl{bottom:14px;left:14px;} .bolt.br{bottom:14px;right:14px;}
+  /* ---------- Page hero ---------- */
+  .page-hero{margin-top:16px;padding-bottom:22px;border-bottom:1px solid var(--line);}
+  .page-hero .eyebrow{font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--steel-500);}
+  .page-hero h1{font-size:30px;font-weight:700;color:var(--steel-900);margin-top:6px;}
+  .page-hero .desc{font-size:14px;color:#5B6B7B;margin-top:8px;max-width:560px;line-height:1.6;}
 
-  .board-eyebrow{
-    color:var(--steel-300);
-    font-size:12px;
-    font-weight:600;
-    letter-spacing:0.18em;
-    text-transform:uppercase;
-    position:relative;
-    z-index:1;
-  }
-  .board-title{
-    color:var(--white);
-    font-size:22px;
-    margin-top:6px;
-    font-weight:600;
-    position:relative;
-    z-index:1;
-  }
-  .counter-row{
-    margin-top:22px;
-    display:flex;
-    align-items:flex-end;
-    gap:18px;
-    flex-wrap:wrap;
-    position:relative;
-    z-index:1;
-  }
-  .digits{
-    display:flex;
-    gap:6px;
-  }
-  .digit{
-    width:52px;height:70px;
-    background:#0B1826;
-    border-radius:6px;
-    display:flex;align-items:center;justify-content:center;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:38px;
-    font-weight:600;
-    color:var(--amber);
-    text-shadow:0 0 14px var(--amber-glow);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), inset 0 -3px 6px rgba(0,0,0,0.4);
-  }
-  .digit-unit{
-    align-self:center;
-    color:var(--steel-300);
-    font-size:14px;
-    font-weight:600;
-    margin-bottom:6px;
-  }
-  .board-sub{
-    margin-left:auto;
-    text-align:right;
-    position:relative;
-    z-index:1;
-  }
-  .board-sub .label{
-    color:var(--steel-300);
-    font-size:12px;
-    font-weight:500;
-  }
-  .board-sub .val{
-    color:var(--white);
-    font-family:'Oswald',sans-serif;
-    font-size:20px;
-    font-weight:600;
-    margin-top:2px;
-  }
-  .progress{
-    margin-top:20px;
-    position:relative;
-    z-index:1;
-  }
-  .progress-track{
-    height:8px;
-    border-radius:4px;
-    background:rgba(255,255,255,0.12);
-    overflow:hidden;
-  }
-  .progress-fill{
-    height:100%;
-    width:62%;
-    background:linear-gradient(90deg, var(--amber), #f4c876);
-    border-radius:4px;
-  }
-  .progress-labels{
-    display:flex;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:6px 16px;
-    margin-top:8px;
-    font-size:12px;
-    color:var(--steel-300);
-  }
-  .progress-labels .current{color:var(--amber);font-weight:600;}
-  .progress-labels .milestones{letter-spacing:0.02em;}
-
-  /* ---------- Section heading ---------- */
-  .section{margin-top:56px;}
-  .section-head{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    margin-bottom:18px;
-    border-bottom:1px solid var(--line);
-    padding-bottom:12px;
-  }
-  .section-head h2{
-    font-size:21px;
-    font-weight:600;
-    color:var(--steel-900);
-  }
-  .section-head .eyebrow{
-    font-size:11px;
-    font-weight:600;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--steel-500);
-  }
-  .section-head .more{
-    font-size:13px;
-    font-weight:600;
-    color:var(--steel-500);
-  }
-
-  /* ---------- Site select chips (히어로 내부) ---------- */
-  .site-chip-row{
-    margin-top:18px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    position:relative;
-    z-index:1;
-  }
+  /* ---------- Site chips (재사용 패턴) ---------- */
+  .site-chip-row{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px;}
   .site-chip{
-    font-family:'Inter',sans-serif;
-    font-size:13px;
-    font-weight:600;
-    padding:8px 14px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,0.18);
-    background:rgba(255,255,255,0.06);
-    color:var(--steel-100);
-    cursor:pointer;
+    font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;
+    padding:9px 16px;border-radius:999px;border:1px solid var(--line);
+    background:var(--white);color:var(--steel-700);cursor:pointer;
     transition:background .15s ease, border-color .15s ease, color .15s ease;
   }
-  .site-chip:hover{
-    background:rgba(255,255,255,0.14);
-  }
-  .site-chip.active{
-    background:var(--amber);
-    border-color:var(--amber);
-    color:var(--steel-900);
-  }
-  .site-chip:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
-  .status{
-    display:inline-flex;
-    align-items:center;
-    gap:6px;
-    font-size:12px;
-    font-weight:600;
-    padding:5px 10px;
-    border-radius:999px;
-    width:fit-content;
-  }
-  .status.safe{background:#E8F4EC;color:var(--green);}
-  .status.watch{background:#FDF1E1;color:#B5741C;}
-  .status .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+  .site-chip:hover{border-color:var(--steel-500);}
+  .site-chip.active{background:var(--steel-900);border-color:var(--steel-900);color:var(--white);}
+  .site-chip:focus-visible{outline:2px solid var(--steel-500);outline-offset:2px;}
 
-  /* ---------- Quick links (컴팩트 한줄형) ---------- */
-  .quick-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
+  /* ---------- Content ---------- */
+  .section{margin-top:30px;}
+  .content-grid{
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap:20px;
   }
-  .quick-item{
-    display:flex;
-    align-items:center;
-    gap:9px;
+  .info-card{
     background:var(--white);
     border:1px solid var(--line);
-    border-radius:999px;
-    padding:9px 16px 9px 9px;
-    font-size:13.5px;
-    font-weight:600;
-    color:var(--steel-900);
-    flex:1 1 220px;
-    transition:border-color .15s ease, background .15s ease;
+    border-radius:var(--radius);
+    padding:24px 26px;
   }
-  .quick-item:hover, .quick-item:focus-visible{
-    border-color:var(--steel-500);
-    background:var(--steel-100);
-  }
-  .quick-icon{
-    width:28px;height:28px;
-    border-radius:50%;
-    background:var(--steel-100);
-    color:var(--steel-700);
-    display:flex;align-items:center;justify-content:center;
-    flex-shrink:0;
-  }
-  .quick-icon svg{width:15px;height:15px;}
+  .info-card h2{font-size:17px;font-weight:600;color:var(--steel-900);margin-bottom:18px;}
 
-  /* ---------- Notice list ---------- */
-  .notice-list{
+  .field-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:14px;
+    padding:13px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .field-row:last-child{border-bottom:none;}
+  .field-label{font-size:13px;font-weight:600;color:#5B6B7B;flex-shrink:0;white-space:nowrap;}
+  .field-value{font-size:14.5px;color:var(--steel-900);font-weight:500;text-align:right;}
+  .field-value.empty{color:#B7C2CC;font-weight:400;}
+
+  .map-card{
     background:var(--white);
     border:1px solid var(--line);
     border-radius:var(--radius);
     overflow:hidden;
-  }
-  .notice-row{
     display:flex;
+    flex-direction:column;
+  }
+  .map-card h2{font-size:17px;font-weight:600;color:var(--steel-900);padding:24px 26px 0;margin-bottom:0;}
+  .map-placeholder{
+    flex:1;
+    min-height:260px;
+    margin:18px 26px 26px;
+    border-radius:10px;
+    background:
+      repeating-linear-gradient(45deg, var(--steel-100) 0 10px, #EEF3F8 10px 20px);
+    display:flex;
+    flex-direction:column;
     align-items:center;
-    gap:16px;
-    padding:15px 20px;
-    border-bottom:1px solid var(--line);
-    font-size:14px;
+    justify-content:center;
+    gap:8px;
+    color:#7A8896;
+    text-align:center;
+    padding:20px;
   }
-  .notice-row:last-child{border-bottom:none;}
-  .notice-row-link{
-    text-decoration:none;
-    cursor:pointer;
-    transition:background .12s ease;
-  }
-  .notice-row-link:hover, .notice-row-link:focus-visible{background:var(--steel-100);}
-  .notice-tag{
-    font-size:11px;
-    font-weight:700;
-    padding:4px 9px;
-    border-radius:5px;
-    background:var(--steel-100);
-    color:var(--steel-700);
-    flex-shrink:0;
-  }
-  .notice-tag.important{background:#FDECEC;color:#C0392B;}
-  .notice-title{flex:1;color:var(--ink);}
-  .notice-date{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12px;
-    color:#8593A2;
-    flex-shrink:0;
-  }
+  .map-placeholder svg{width:34px;height:34px;color:var(--steel-500);}
+  .map-placeholder .t1{font-size:13.5px;font-weight:600;color:var(--steel-700);}
+  .map-placeholder .t2{font-size:12px;line-height:1.5;max-width:220px;}
 
-  footer{
-    background:var(--steel-900);
-    color:var(--steel-300);
-    margin-top:70px;
-    padding:30px 28px;
-  }
-  .footer-inner{
-    max-width:1180px;
-    margin:0 auto;
-    display:flex;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    gap:12px;
-    font-size:13px;
-  }
+  footer{background:var(--steel-900);color:var(--steel-300);margin-top:70px;padding:30px 28px;}
+  .footer-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13px;}
   .footer-inner .em{color:var(--white);font-weight:600;}
 
-  @media (max-width:900px){
-    .board-sub{margin-left:0;text-align:left;}
-    .counter-row{flex-direction:column;align-items:flex-start;}
+  @media (max-width:800px){
+    .content-grid{grid-template-columns:1fr;}
   }
   @media (max-width:560px){
-    .quick-item{flex:1 1 100%;}
-    .site-chip{font-size:12px;padding:7px 12px;}
-    .digit{width:40px;height:56px;font-size:28px;}
     .header-inner{padding:16px 18px;}
     main{padding:0 18px 60px;}
+    .crumb{padding:0 18px;}
+    .info-card, .map-card h2{padding-left:18px;padding-right:18px;}
+    .map-placeholder{margin:18px;}
   }
-
   :focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
-  @media (prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto;}
-    .site-card{transition:none;}
-  }
 
   /* ---------- 관리자 모드 ---------- */
+  body.admin-on{padding-top:44px;}
+  body.admin-on header{margin-top:0;}
+
   .admin-banner{
     position:fixed;left:0;right:0;top:0;z-index:199;
     background:var(--amber);color:var(--steel-900);
     font-size:13px;font-weight:600;
     padding:9px 16px;
-    display:none;align-items:center;justify-content:center;
+    display:none;
+    align-items:center;justify-content:center;
     gap:14px;flex-wrap:wrap;
     box-shadow:0 2px 10px rgba(0,0,0,0.15);
   }
@@ -450,7 +164,7 @@
     border:none;border-radius:6px;padding:6px 13px;cursor:pointer;
     transition:background .15s ease;
   }
-  .admin-banner button:hover{background:var(--steel-800);}
+  .admin-banner button:hover{background:var(--steel-700);}
   .admin-banner button.ghost{background:rgba(15,31,48,0.12);color:var(--steel-900);}
   .admin-banner button.ghost:hover{background:rgba(15,31,48,0.2);}
 
@@ -467,57 +181,15 @@
   .admin-fab svg{width:16px;height:16px;flex-shrink:0;}
   .admin-fab.on{background:var(--amber);color:var(--steel-900);}
 
-  .admin-edit-panel{
-    display:none;
-    margin-top:18px;
-    padding:16px 18px;
-    background:rgba(255,255,255,0.06);
-    border:1px dashed rgba(255,255,255,0.35);
-    border-radius:10px;
-    position:relative;z-index:1;
+  body.admin-on .field-value[contenteditable="true"]{
+    outline:1.5px dashed var(--steel-500);outline-offset:4px;
+    border-radius:4px;cursor:text;
+    transition:background .12s ease;
   }
-  body.admin-on .admin-edit-panel{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-end;}
-  .admin-field{display:flex;flex-direction:column;gap:5px;}
-  .admin-field label{font-size:11px;font-weight:600;color:var(--steel-300);letter-spacing:0.04em;text-transform:uppercase;}
-  .admin-field input{
-    font-family:'IBM Plex Mono',monospace;font-size:13.5px;
-    background:rgba(255,255,255,0.08);color:var(--white);
-    border:1px solid rgba(255,255,255,0.25);border-radius:6px;
-    padding:8px 10px;width:170px;
+  body.admin-on .field-value[contenteditable="true"]:hover{background:var(--steel-100);}
+  body.admin-on .field-value[contenteditable="true"]:focus{
+    outline:1.5px solid var(--amber);background:var(--white);
   }
-  .admin-field input:focus{outline:1.5px solid var(--amber);}
-  .admin-save-btn{
-    font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
-    background:var(--amber);color:var(--steel-900);border:none;
-    border-radius:7px;padding:9px 16px;cursor:pointer;height:fit-content;
-  }
-  .admin-save-btn:hover{background:#f4c876;}
-
-  body.admin-on .notice-row{position:relative;}
-  .notice-edit-field{outline:none;border-radius:3px;}
-  body.admin-on .notice-title, body.admin-on .notice-date, body.admin-on .notice-tag{
-    outline:1.5px dashed var(--steel-500);outline-offset:2px;cursor:text;border-radius:4px;
-  }
-  body.admin-on .notice-title:focus, body.admin-on .notice-date:focus, body.admin-on .notice-tag:focus{
-    outline:1.5px solid var(--amber);background:var(--steel-100);
-  }
-  .notice-del-btn{
-    display:none;
-    flex-shrink:0;
-    width:26px;height:26px;border-radius:50%;
-    border:1px solid var(--line);background:var(--white);color:#C0392B;
-    align-items:center;justify-content:center;cursor:pointer;font-size:15px;line-height:1;
-  }
-  .notice-del-btn:hover{background:#FDECEC;border-color:#F1C4BC;}
-  body.admin-on .notice-del-btn{display:flex;}
-  .notice-add-row{display:none;padding:13px 20px;}
-  body.admin-on .notice-add-row{display:block;}
-  .notice-add-btn{
-    font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
-    background:none;border:1.5px dashed var(--steel-500);color:var(--steel-700);
-    border-radius:8px;padding:9px 14px;cursor:pointer;width:100%;
-  }
-  .notice-add-btn:hover{background:var(--steel-100);}
 
   .admin-modal-backdrop{
     position:fixed;inset:0;background:rgba(15,31,48,0.55);z-index:300;
@@ -541,10 +213,8 @@
     font-size:20px;line-height:1;padding:2px 4px;flex-shrink:0;
   }
   .admin-modal-body{padding:16px 22px;overflow:auto;}
-  .admin-modal-body h4{font-size:13px;font-weight:600;color:var(--steel-900);margin:14px 0 6px;}
-  .admin-modal-body h4:first-child{margin-top:0;}
   .admin-modal textarea{
-    width:100%;min-height:150px;
+    width:100%;min-height:280px;
     font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;
     color:var(--ink);background:var(--paper);
     border:1px solid var(--line);border-radius:8px;padding:14px;
@@ -567,7 +237,6 @@
   @media (max-width:560px){
     .admin-fab span{display:none;}
     .admin-fab{padding:13px;border-radius:50%;}
-    .admin-field input{width:130px;}
   }
 </style>
 </head>
@@ -581,8 +250,8 @@
       <div class="brand-text">안전환경팀<span>HEALTH, SAFETY & ENVIRONMENT TEAM</span></div>
     </div>
     <nav>
-      <a href="#" class="active">홈</a>
-      <a href="site-status.html">사업장 현황</a>
+      <a href="index.html">홈</a>
+      <a href="site-status.html" class="active">사업장 현황</a>
       <a href="education.html">안전보건교육</a>
       <a href="inspection.html">안전보건점검</a>
       <a href="risk-assessment.html">위험성평가</a>
@@ -595,72 +264,123 @@
   </div>
 </header>
 
+<div class="crumb">
+  <a href="index.html">홈</a><span class="sep">/</span>
+  <span>사업장 현황</span>
+</div>
+
 <main>
 
-  <!-- 무재해 전광판 -->
-  <section class="board-wrap" id="sites">
-    <span class="bolt tl"></span><span class="bolt tr"></span>
-    <span class="bolt bl"></span><span class="bolt br"></span>
-    <div class="board-eyebrow">무재해 운동 · <span id="selectedName">신라철강 대구생산팀</span></div>
-    <h1 class="board-title">오늘도 무사고, 함께 만드는 안전한 일터</h1>
+  <div class="page-hero">
+    <div class="eyebrow">Site Status</div>
+    <h1>사업장 현황</h1>
+    <p class="desc">사업장을 선택하면 주소와 안전보건 관리체계(관리책임자·관리자·감독자) 기본정보를 확인할 수 있습니다.</p>
+  </div>
 
-    <div class="site-chip-row" id="siteChipRow">
-      <button type="button" class="site-chip active" data-id="silla-daegu">신라철강 대구생산팀</button>
-      <button type="button" class="site-chip" data-id="silla-pyeongtaek">신라철강 평택생산팀</button>
-      <button type="button" class="site-chip" data-id="silla-gwangyang">신라철강 광양생산팀</button>
-      <button type="button" class="site-chip" data-id="tc-pohang">태창철강 포항생산팀</button>
-      <button type="button" class="site-chip" data-id="tctech">티시테크</button>
-      <button type="button" class="site-chip" data-id="tcsteel">티시스틸</button>
-      <button type="button" class="site-chip" data-id="sayuwon">사유원</button>
-    </div>
+  <!-- 사업장 선택 -->
+  <div class="site-chip-row" id="siteChipRow">
+    <button type="button" class="site-chip active" data-id="silla-daegu">신라철강 대구생산팀</button>
+    <button type="button" class="site-chip" data-id="silla-pyeongtaek">신라철강 평택생산팀</button>
+    <button type="button" class="site-chip" data-id="silla-gwangyang">신라철강 광양생산팀</button>
+    <button type="button" class="site-chip" data-id="tc-pohang">태창철강 포항생산팀</button>
+    <button type="button" class="site-chip" data-id="tctech">티시테크</button>
+    <button type="button" class="site-chip" data-id="tcsteel">티시스틸</button>
+    <button type="button" class="site-chip" data-id="sayuwon">사유원</button>
+  </div>
 
-    <div class="counter-row">
-      <div class="digits" id="digitsRow">
-        <div class="digit">0</div>
-        <div class="digit">4</div>
-        <div class="digit">2</div>
-      </div>
-      <div class="digit-unit">일째</div>
-
-      <div class="board-sub">
-        <div class="label">최근 사고일</div>
-        <div class="val" id="lastAccident">2026.07.02</div>
-      </div>
-    </div>
-
-    <div class="progress">
-      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:42%;"></div></div>
-      <div class="progress-labels">
-        <span class="current" id="currentLabel">42일</span>
-        <span class="milestones" id="rangeLabel">0일 ~ 100일</span>
-      </div>
-    </div>
-
-    <!-- 관리자 전용 수정 패널 -->
-    <div class="admin-edit-panel" id="adminEditPanel">
-      <div class="admin-field">
-        <label for="adminDateInput">최근 사고일 (YYYY.MM.DD)</label>
-        <input type="text" id="adminDateInput" placeholder="2026.01.01">
-      </div>
-      <button type="button" class="admin-save-btn" id="adminSaveSite">이 사업장 저장</button>
-      <span style="font-size:11.5px;color:var(--steel-300);align-self:center;">※ 무재해 일수는 최근 사고일 기준으로 매일 자동 계산됩니다</span>
-    </div>
-  </section>
-
-
-  <!-- 공지사항 미리보기 -->
   <section class="section">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">Notice</div>
-        <h2>안전 공지사항</h2>
+    <div class="content-grid">
+
+      <div class="info-card">
+        <h2 id="infoTitle">신라철강 대구생산팀 · 기본정보</h2>
+        <div class="field-row"><span class="field-label">주소</span><span class="field-value empty" id="f-address">입력 예정</span></div>
+        <div class="field-row"><span class="field-label">안전보건관리책임자</span><span class="field-value empty" id="f-safetyHealthChief">입력 예정</span></div>
+        <div class="field-row"><span class="field-label">안전보건총괄책임자</span><span class="field-value empty" id="f-safetyHealthGeneral">입력 예정</span></div>
+        <div class="field-row"><span class="field-label">안전관리자</span><span class="field-value empty" id="f-safetyManager">입력 예정</span></div>
+        <div class="field-row"><span class="field-label">보건관리자</span><span class="field-value empty" id="f-healthManager">입력 예정</span></div>
+        <div class="field-row"><span class="field-label">관리감독자</span><span class="field-value empty" id="f-supervisor">입력 예정</span></div>
       </div>
-      <a href="notice.html" class="more">전체보기 →</a>
+
+      <div class="map-card">
+        <h2>위치</h2>
+        <div id="mapContainer" class="map-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <div class="t1">지도 표시 예정</div>
+          <div class="t2">주소가 입력되면 이 자리에 위치 지도가 표시됩니다.</div>
+        </div>
+      </div>
+
     </div>
-    <div class="notice-list" id="noticePreviewList"></div>
   </section>
 
 </main>
+
+<script>
+  // 사업장 기본정보 - 실제 정보 확정되면 값만 채워 넣으면 됩니다 (빈 값은 "입력 예정"으로 표시)
+  const SITE_INFO = {
+    'silla-daegu':      { name:'신라철강 대구생산팀',  address:'대구광역시 달서구 성서공단북로 194',            safetyHealthChief:'김대영', safetyHealthGeneral:'김대영', safetyManager:'대한산업안전협회', healthManager:'대구가톨릭산업보건센터', supervisor:'' },
+    'silla-pyeongtaek': { name:'신라철강 평택생산팀',  address:'경기도 평택시 포승읍 평택항만길 97',            safetyHealthChief:'김대영', safetyHealthGeneral:'김대영', safetyManager:'대한산업안전협회', healthManager:'대한산업보건협회',     supervisor:'' },
+    'silla-gwangyang':  { name:'신라철강 광양생산팀',  address:'전라남도 광양시 명당4길 8',                     safetyHealthChief:'김대영', safetyHealthGeneral:'김대영', safetyManager:'대한산업안전협회', healthManager:'대한산업보건협회',     supervisor:'' },
+    'tc-pohang':        { name:'태창철강 포항생산팀',  address:'경상북도 포항시 남구 대송면 송덕로 68',         safetyHealthChief:'김대영', safetyHealthGeneral:'김대영', safetyManager:'한국안전기술원',   healthManager:'포항성모병원',         supervisor:'' },
+    'tctech':           { name:'티시테크',            address:'경상북도 포항시 남구 대송면 철강산단로 66번길 89', safetyHealthChief:'문경봉', safetyHealthGeneral:'문경봉', safetyManager:'채기병',         healthManager:'채기병',              supervisor:'' },
+    'tcsteel':          { name:'티시스틸',            address:'경상북도 포항시 남구 대송면 철강산단로 66번길 88', safetyHealthChief:'오주천', safetyHealthGeneral:'',      safetyManager:'한국안전기술원',   healthManager:'',                    supervisor:'' },
+    'sayuwon':          { name:'사유원',              address:'대구광역시 군위군 부계면 치산효령로 1150',      safetyHealthChief:'박해술', safetyHealthGeneral:'박해술', safetyManager:'',              healthManager:'',                    supervisor:'' },
+  };
+
+  const FIELD_MAP = {
+    address:'f-address',
+    safetyHealthChief:'f-safetyHealthChief',
+    safetyHealthGeneral:'f-safetyHealthGeneral',
+    safetyManager:'f-safetyManager',
+    healthManager:'f-healthManager',
+    supervisor:'f-supervisor',
+  };
+
+  function renderSite(id){
+    window.currentSiteId = id;
+    const site = window.getSiteData ? window.getSiteData(id) : (SITE_INFO[id] || SITE_INFO['silla-daegu']);
+    document.getElementById('infoTitle').textContent = site.name + ' · 기본정보';
+
+    Object.keys(FIELD_MAP).forEach(function(key){
+      const el = document.getElementById(FIELD_MAP[key]);
+      const value = site[key];
+      if(value){
+        el.textContent = value;
+        el.classList.remove('empty');
+      } else {
+        el.textContent = '입력 예정';
+        el.classList.add('empty');
+      }
+    });
+
+    document.querySelectorAll('.site-chip').forEach(function(el){
+      el.classList.toggle('active', el.dataset.id === id);
+    });
+
+    const mapContainer = document.getElementById('mapContainer');
+    if(site.address){
+      const src = 'https://maps.google.com/maps?q=' + encodeURIComponent(site.address) + '&output=embed';
+      mapContainer.className = '';
+      mapContainer.style.cssText = 'flex:1;min-height:260px;margin:18px 26px 26px;border-radius:10px;overflow:hidden;';
+      mapContainer.innerHTML = '<iframe src="' + src + '" width="100%" height="100%" style="border:0;min-height:260px;display:block;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="' + site.name + ' 위치 지도"></iframe>';
+    } else {
+      mapContainer.className = 'map-placeholder';
+      mapContainer.style.cssText = '';
+      mapContainer.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>' +
+        '<div class="t1">지도 표시 예정</div>' +
+        '<div class="t2">주소가 입력되면 이 자리에 위치 지도가 표시됩니다.</div>';
+    }
+  }
+
+  document.getElementById('siteChipRow').addEventListener('click', function(e){
+    const btn = e.target.closest('.site-chip');
+    if(!btn) return;
+    renderSite(btn.dataset.id);
+  });
+
+  renderSite('silla-daegu');
+</script>
 
 <footer>
   <div class="footer-inner">
@@ -671,7 +391,7 @@
 
 <!-- 관리자 모드 배너 -->
 <div class="admin-banner" id="adminBanner">
-  <span>🔧 관리자 모드 — 사업장 카드 아래 입력창에서 최근 사고일을 수정하세요 (이 브라우저에만 저장됩니다)</span>
+  <span>🔧 관리자 모드 — 점선 표시된 항목을 클릭해서 바로 수정하세요 (이 브라우저에만 저장됩니다)</span>
   <button type="button" id="btnExport">코드 내보내기</button>
   <button type="button" class="ghost" id="btnResetAdmin">변경사항 초기화</button>
 </div>
@@ -688,7 +408,7 @@
     <div class="admin-modal-head">
       <div>
         <h3>수정된 코드 내보내기</h3>
-        <p>아래 코드를 전체 복사해서 index.html 파일 안의 <span class="mono">SAFETY_SITES</span> 부분과 통째로 교체하면, 사이트를 보는 모든 사람에게 반영됩니다. (공지사항은 <a href="notice.html" style="color:var(--steel-500);font-weight:600;">공지사항 페이지</a>에서 따로 관리합니다)</p>
+        <p>아래 코드를 전체 복사해서 site-status.html 파일 안의 <span class="mono">SITE_INFO</span> 객체 부분과 통째로 교체하면, 사이트를 보는 모든 사람에게 반영됩니다.</p>
       </div>
       <button type="button" class="admin-modal-close" id="closeExportModal" aria-label="닫기">×</button>
     </div>
@@ -702,215 +422,136 @@
   </div>
 </div>
 
-  <script>
-    // 사업장별 무재해 데이터 - 실제 값으로 바꿔서 사용하세요
-    const SAFETY_SITES = {
-      'silla-daegu':      { name:'신라철강 대구생산팀',  lastAccident:'2026.07.02' },
-      'silla-pyeongtaek': { name:'신라철강 평택생산팀',  lastAccident:'2026.02.07' },
-      'silla-gwangyang':  { name:'신라철강 광양생산팀',  lastAccident:'2025.08.13' },
-      'tc-pohang':        { name:'태창철강 포항생산팀',  lastAccident:'2026.04.07' },
-      'tctech':           { name:'티시테크',          lastAccident:'2025.03.19' },
-      'tcsteel':          { name:'티시스틸',          lastAccident:'2026.05.29' },
-      'sayuwon':          { name:'사유원',            lastAccident:'2023.03.22' },
-    };
+<script>
+(function(){
+  // ---------- 관리자 모드: 로컬 저장 ----------
+  var OVERRIDES_KEY = 'siteStatus_overrides_v1';
+  var ADMIN_MODE_KEY = 'siteStatus_adminMode_v1';
 
-    // 안전 공지사항 - 필요하면 이 배열을 직접 수정해도 되고, 관리자모드로 편집해도 됩니다
-    const NOTICES = [
-      { tag:'중요',   important:true,  title:'철강제조 공장 하절기 폭염 대응 지침 안내',            date:'2026.08.10' },
-      { tag:'교육',   important:false, title:'3분기 정기 소방훈련 일정 공지 (전 사업장)',           date:'2026.08.05' },
-      { tag:'캠페인', important:false, title:'8월의 안전 캠페인 - 보호구 올바로 착용하기',          date:'2026.08.01' },
-    ];
+  function loadOverrides(){
+    try{ return JSON.parse(localStorage.getItem(OVERRIDES_KEY) || '{}'); }
+    catch(e){ return {}; }
+  }
+  function saveOverrides(){ localStorage.setItem(OVERRIDES_KEY, JSON.stringify(overrides)); }
 
-    // 무재해 목표 구간 - 필요하면 이 배열만 수정하면 구간이 자동으로 재계산됩니다
-    const MILESTONES = [0, 100, 300, 500, 1000];
+  window.overrides = loadOverrides();
+  window.adminMode = localStorage.getItem(ADMIN_MODE_KEY) === '1';
 
-    // ---------- 관리자 모드: 로컬 저장 ----------
-    const SITE_OV_KEY = 'home_siteOverrides_v1';
-    const NOTICE_OV_KEY = 'home_noticeOverrides_v1';
-    const ADMIN_MODE_KEY = 'home_adminMode_v1';
+  // FIELD_MAP의 id -> key 역매핑 (id -> data key)
+  window.ID_TO_KEY = {};
+  Object.keys(FIELD_MAP).forEach(function(key){ ID_TO_KEY[FIELD_MAP[key]] = key; });
 
-    function loadJSON(key, fallback){
-      try{ return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
-      catch(e){ return fallback; }
-    }
-    function saveJSON(key, val){ localStorage.setItem(key, JSON.stringify(val)); }
+  // 원본 SITE_INFO + 저장된 수정값을 합쳐서 반환
+  window.getSiteData = function(id){
+    var base = SITE_INFO[id] || SITE_INFO['silla-daegu'];
+    var ov = overrides[id] || {};
+    return Object.assign({}, base, ov);
+  };
 
-    // 최근 사고일(YYYY.MM.DD) 기준으로 오늘까지 며칠 지났는지 매번 계산 - 날짜가 바뀌면 자동으로 갱신됩니다
-    function daysSince(dateStr){
-      if(!dateStr) return 0;
-      const parts = dateStr.split('.').map(function(n){ return parseInt(n, 10); });
-      if(parts.length !== 3 || parts.some(isNaN)) return 0;
-      const last = new Date(parts[0], parts[1] - 1, parts[2]);
-      const today = new Date();
-      last.setHours(0,0,0,0);
-      today.setHours(0,0,0,0);
-      const diff = Math.round((today - last) / (1000 * 60 * 60 * 24));
-      return Math.max(0, diff);
-    }
-
-    let siteOverrides = loadJSON(SITE_OV_KEY, {});
-    let noticeOverrides = loadJSON(NOTICE_OV_KEY, null); // null이면 기본 NOTICES 그대로 사용
-    let adminMode = localStorage.getItem(ADMIN_MODE_KEY) === '1';
-    let currentSiteId = 'silla-daegu';
-
-    function getSiteData(id){
-      const base = SAFETY_SITES[id] || SAFETY_SITES['silla-daegu'];
-      const ov = siteOverrides[id] || {};
-      const merged = Object.assign({}, base, ov);
-      merged.days = daysSince(merged.lastAccident);
-      return merged;
-    }
-    function getNotices(){
-      return noticeOverrides || NOTICES;
-    }
-    function setNotices(list){
-      noticeOverrides = list;
-      saveJSON(NOTICE_OV_KEY, noticeOverrides);
-    }
-
-    function getRange(days){
-      for(let i=0;i<MILESTONES.length-1;i++){
-        if(days < MILESTONES[i+1]) return { start:MILESTONES[i], end:MILESTONES[i+1] };
-      }
-      return { start:MILESTONES[MILESTONES.length-1], end:null };
-    }
-
-    function renderSite(id){
-      currentSiteId = id;
-      const site = getSiteData(id);
-      const digitStr = site.days < 100 ? String(site.days).padStart(3,'0') : String(site.days);
-      const digitsRow = document.getElementById('digitsRow');
-      digitsRow.innerHTML = '';
-      digitStr.split('').forEach(function(ch){
-        const el = document.createElement('div');
-        el.className = 'digit';
-        el.textContent = ch;
-        digitsRow.appendChild(el);
-      });
-      document.getElementById('lastAccident').textContent = site.lastAccident;
-      document.getElementById('selectedName').textContent = site.name;
-      document.getElementById('currentLabel').textContent = site.days + '일';
-
-      const range = getRange(site.days);
-      const fillEl = document.getElementById('progressFill');
-      const rangeEl = document.getElementById('rangeLabel');
-      if(range.end !== null){
-        const percent = Math.min(100, Math.max(0, (site.days - range.start) / (range.end - range.start) * 100));
-        fillEl.style.width = percent + '%';
-        rangeEl.textContent = range.start + '일 ~ ' + range.end + '일';
-      } else {
-        fillEl.style.width = '100%';
-        rangeEl.textContent = range.start + '일 ~';
-      }
-
-      document.querySelectorAll('.site-chip').forEach(function(el){
-        el.classList.toggle('active', el.dataset.id === id);
-      });
-
-      // 관리자 입력창도 현재 사업장 값으로 동기화
-      const dateInput = document.getElementById('adminDateInput');
-      if(dateInput) dateInput.value = site.lastAccident;
-    }
-
-    document.getElementById('siteChipRow').addEventListener('click', function(e){
-      const btn = e.target.closest('.site-chip');
-      if(!btn) return;
-      renderSite(btn.dataset.id);
+  function applyAdminModeUI(){
+    document.body.classList.toggle('admin-on', adminMode);
+    document.getElementById('adminBanner').classList.toggle('show', adminMode);
+    document.getElementById('adminFab').classList.toggle('on', adminMode);
+    document.getElementById('adminFabLabel').textContent = adminMode ? '관리자 모드 끄기' : '관리자 모드';
+    Object.keys(ID_TO_KEY).forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.setAttribute('contenteditable', adminMode ? 'true' : 'false');
     });
+  }
 
-    document.getElementById('adminSaveSite').addEventListener('click', function(){
-      const dateVal = document.getElementById('adminDateInput').value.trim();
-      if(!/^\d{4}\.\d{2}\.\d{2}$/.test(dateVal)){ alert('날짜를 YYYY.MM.DD 형식으로 입력해주세요. (예: 2026.01.01)'); return; }
-      if(!siteOverrides[currentSiteId]) siteOverrides[currentSiteId] = {};
-      siteOverrides[currentSiteId].lastAccident = dateVal;
-      saveJSON(SITE_OV_KEY, siteOverrides);
-      renderSite(currentSiteId);
-    });
-
-    // ---------- 공지사항 미리보기 (최신 3개, 제목만 · 클릭 시 전체 공지사항 페이지로 이동) ----------
-    function renderNoticePreview(){
-      const list = getNotices().slice(0, 3);
-      const wrap = document.getElementById('noticePreviewList');
-      wrap.innerHTML = '';
-      list.forEach(function(n){
-        const row = document.createElement('a');
-        row.href = 'notice.html';
-        row.className = 'notice-row notice-row-link';
-        row.innerHTML =
-          '<span class="notice-tag' + (n.important ? ' important' : '') + '">' + n.tag + '</span>' +
-          '<span class="notice-title">' + n.title + '</span>';
-        wrap.appendChild(row);
-      });
-      if(list.length === 0){
-        wrap.innerHTML = '<div class="notice-row" style="color:#8593A2;">등록된 공지사항이 없습니다.</div>';
-      }
-    }
-
-    renderSite('silla-daegu');
-    renderNoticePreview();
-
-    // ---------- 관리자 모드 토글 ----------
-    function applyAdminModeUI(){
-      document.body.classList.toggle('admin-on', adminMode);
-      document.getElementById('adminBanner').classList.toggle('show', adminMode);
-      document.getElementById('adminFab').classList.toggle('on', adminMode);
-      document.getElementById('adminFabLabel').textContent = adminMode ? '관리자 모드 끄기' : '관리자 모드';
-    }
-    document.getElementById('adminFab').addEventListener('click', function(){
-      adminMode = !adminMode;
-      localStorage.setItem(ADMIN_MODE_KEY, adminMode ? '1' : '0');
-      applyAdminModeUI();
-    });
-
-    // ---------- 코드 내보내기 ----------
-    function escQ(s){ return String(s || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
-    function buildExportCode(){
-      let lines = [];
-      lines.push('    const SAFETY_SITES = {');
-      Object.keys(SAFETY_SITES).forEach(function(id){
-        const s = getSiteData(id);
-        lines.push("      '" + id + "': { name:'" + escQ(s.name) + "', lastAccident:'" + escQ(s.lastAccident) + "' },");
-      });
-      lines.push('    };');
-      return lines.join('\n');
-    }
-    document.getElementById('btnExport').addEventListener('click', function(){
-      document.getElementById('exportCode').value = buildExportCode();
-      document.getElementById('exportModal').classList.add('show');
-    });
-    function closeExportModal(){ document.getElementById('exportModal').classList.remove('show'); }
-    document.getElementById('closeExportModal').addEventListener('click', closeExportModal);
-    document.getElementById('closeExportModal2').addEventListener('click', closeExportModal);
-    document.getElementById('exportModal').addEventListener('click', function(e){
-      if(e.target === this) closeExportModal();
-    });
-    document.getElementById('copyExportCode').addEventListener('click', function(){
-      const ta = document.getElementById('exportCode');
-      ta.select();
-      const btn = document.getElementById('copyExportCode');
-      const done = function(){
-        const orig = btn.textContent;
-        btn.textContent = '복사됨!';
-        setTimeout(function(){ btn.textContent = orig; }, 1500);
-      };
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(ta.value).then(done).catch(done);
-      } else {
-        try{ document.execCommand('copy'); }catch(e){}
-        done();
-      }
-    });
-
-    // ---------- 초기화 ----------
-    document.getElementById('btnResetAdmin').addEventListener('click', function(){
-      if(confirm('저장된 사업장 수정 내용을 모두 초기화할까요? 이 동작은 되돌릴 수 없습니다.')){
-        siteOverrides = {};
-        saveJSON(SITE_OV_KEY, siteOverrides);
-        renderSite(currentSiteId);
-      }
-    });
-
+  document.getElementById('adminFab').addEventListener('click', function(){
+    adminMode = !adminMode;
+    localStorage.setItem(ADMIN_MODE_KEY, adminMode ? '1' : '0');
     applyAdminModeUI();
-  </script>
+  });
+
+  // 필드 수정 저장
+  Object.keys(ID_TO_KEY).forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('focus', function(){
+      if(!adminMode) return;
+      if(el.classList.contains('empty')){
+        el.textContent = '';
+        el.classList.remove('empty');
+      }
+    });
+    el.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){ e.preventDefault(); el.blur(); }
+    });
+    el.addEventListener('blur', function(){
+      if(!adminMode) return;
+      var key = ID_TO_KEY[id];
+      var val = el.textContent.replace(/\s+/g,' ').trim();
+      if(!overrides[window.currentSiteId]) overrides[window.currentSiteId] = {};
+      overrides[window.currentSiteId][key] = val;
+      saveOverrides();
+      renderSite(window.currentSiteId);
+    });
+  });
+
+  // 코드 내보내기
+  function escQ(s){ return String(s || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+  function buildExportCode(){
+    var lines = ['  const SITE_INFO = {'];
+    Object.keys(SITE_INFO).forEach(function(id){
+      var s = getSiteData(id);
+      lines.push(
+        "    '" + id + "': { name:'" + escQ(s.name) + "', address:'" + escQ(s.address) +
+        "', safetyHealthChief:'" + escQ(s.safetyHealthChief) +
+        "', safetyHealthGeneral:'" + escQ(s.safetyHealthGeneral) +
+        "', safetyManager:'" + escQ(s.safetyManager) +
+        "', healthManager:'" + escQ(s.healthManager) +
+        "', supervisor:'" + escQ(s.supervisor) + "' },"
+      );
+    });
+    lines.push('  };');
+    return lines.join('\n');
+  }
+
+  document.getElementById('btnExport').addEventListener('click', function(){
+    document.getElementById('exportCode').value = buildExportCode();
+    document.getElementById('exportModal').classList.add('show');
+  });
+  function closeExportModal(){ document.getElementById('exportModal').classList.remove('show'); }
+  document.getElementById('closeExportModal').addEventListener('click', closeExportModal);
+  document.getElementById('closeExportModal2').addEventListener('click', closeExportModal);
+  document.getElementById('exportModal').addEventListener('click', function(e){
+    if(e.target === this) closeExportModal();
+  });
+  document.getElementById('copyExportCode').addEventListener('click', function(){
+    var ta = document.getElementById('exportCode');
+    ta.select();
+    var btn = document.getElementById('copyExportCode');
+    var done = function(){
+      var orig = btn.textContent;
+      btn.textContent = '복사됨!';
+      setTimeout(function(){ btn.textContent = orig; }, 1500);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(ta.value).then(done).catch(done);
+    } else {
+      try{ document.execCommand('copy'); }catch(e){}
+      done();
+    }
+  });
+
+  // 초기화
+  document.getElementById('btnResetAdmin').addEventListener('click', function(){
+    if(confirm('저장된 수정 내용을 모두 초기화할까요? 이 동작은 되돌릴 수 없습니다.')){
+      overrides = {};
+      saveOverrides();
+      renderSite(window.currentSiteId);
+    }
+  });
+
+  applyAdminModeUI();
+  // 저장된 수정값을 반영해 다시 렌더링 (초기 렌더는 overrides 로딩 전에 실행됨)
+  if(typeof renderSite === 'function' && window.currentSiteId){
+    renderSite(window.currentSiteId);
+  }
+})();
+</script>
+
 </body>
 </html>
